@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+  <title>Weather forecast</title>
+  <meta name="viewport" content="width=device-width,initialscale=1,maximum-scale=1,user-scalable=no">
+
+  <style>
+  body {
+      background-color: #99ffff;
+  }
+
+  .loader1 {
+      position: absolute;
+      width: 80%;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      height: 50%;
+      border-radius: 10%;
+      box-shadow: 0 0 20px #ff0000 , 0 0 30px #0000ff;
+      background-color: #3300ff;
+      color: #ffffff;
+      animation-name: animatetop;
+      animation-duration: 1s;
+  }
+  @keyframes animatetop {
+      from {
+          top: 0;
+          opacity: 0;
+      }
+      to {
+          top: 50%;
+          opacity: 1;
+      }
+  }
+  #loader2 {
+      position: absolute;
+      left:50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      top: 50%;
+      width: 40px;
+      height: 40px;
+      margin: -75px 0 0 -75px;
+      border: 10px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 10px solid #3498db;
+      animation: spin 2s linear infinite;
+      text-align: center;
+  }
+
+  @keyframes spin {
+      0% {
+          transform: rotate(0deg);
+      }
+      25% {
+          transform: rotate(90deg);
+      }
+      50% {
+          transform: rotate(180deg);
+      }
+      75% {
+          transform: rotate(270deg);
+      }
+      100% {
+          transform: rotate(360deg);
+      }
+  }
+
+  #page {
+      display: none;
+      position: absolute;
+      box-sizing: border-box;
+      top: 20%;
+      left: 65%;
+      animation-name: animatebottom;
+      animation-duration: 1s;
+  }
+  @keyframes animatebottom {
+      from {
+          top: 80%;
+          opacity: 0;
+      }
+      to {
+          top: 20%;
+          opacity: 1;
+      }
+  }
+  #op {
+      position: absolute ;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      top: 10%;
+      text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: large;
+      text-align: center;
+  }
+  .lightmode {
+      position: absolute;
+      display: none;
+      top: 40%;
+      left: 15%;
+      -ms-transform: translate(-10%, -10%);
+      transform: translate(-10%, -10%);
+      background-color: #ff00ff;
+      color: #000000 ;
+      box-shadow: 0 0 10px #ff0000 , 0 0 20px #0000ff;
+      width: 90%;
+      height: 50%;
+      border-radius: 5%;
+  }
+  .search {
+      position: absolute;
+      top: 20%;
+      left: 5;
+      -ms-transform: translate(-10%, -10%);
+      transform: translate(10%, -10%);
+      padding: 5px 5px;
+      display: inline-block;
+      background-color: #ff00ff ;
+      outline: none;
+      border-radius: 40%;
+      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
+      color: #99ffff;
+  }
+  .city {
+      position: absolute;
+      top: 20%;
+      right: 5%;
+      -ms-transform: translate(-5%, -5%);
+      transform: translate(-5%, -5%);
+      padding: 5px 5px;
+      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
+      color: #000000;
+      outline: none;
+      border-radius: 50px;
+  }
+  #temp {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+  }
+  #tempmin {
+      position: absolute;
+      left: 20%;
+      top: 25%;
+  }
+  #tempmax {
+      position: absolute;
+      left:80%;
+      top: 25%;
+
+  }
+  #desimg {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+  }
+  #des {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+  }
+  #pres {
+      position: absolute;
+      top: 65%;
+      left: 25%;
+  }
+  #humid {
+      position: absolute;
+      left: 80%;
+      top: 65%;
+  }
+  #wind {
+      position: absolute;
+      top: 75%;
+      left: 50%;
+  }
+  #tit {
+      display: none;
+      position: absolute ;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      top: 10%;
+      text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: large;
+      text-align: justify;
+  }
+  #fetch {
+      display: none;
+      position: absolute;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      top: 50%;
+      width: 90%;
+  }
+
+  #dark {
+      position: absolute;
+      top: 2%;
+      left: 80%;
+      outline: none;
+      display: inline-block;
+      color: #ffffff;
+      background-color: #000000;
+      font-size: small;
+      border-radius: 50px;
+      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
+  }
+  #cright{
+      position: absolute;
+      top: 92%;
+      left: 10%;
+  }
+
+  .start {
+      position: absolute;
+      top: 85%;
+      left: 40%;
+      padding: 5px 5px;
+      display: inline-block;
+      background-color: #ff00ff ;
+      outline: none;
+      border-radius: 40%;
+      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
+      color: #99ffff;
+  }
+  .dark-mode {
+      background-color: black;
+      color: white;
+      box-shadow: 0 0 10px #ffffff , 0 0 20px #ffffff;
+  }
+  #text{
+      position: absolute;
+      left: 45%;
+  }
+  #temp,#tempmin,#tempmax,#desimg,#des,#pres,#humid,#wind,#text{
+      -ms-transform: translate(-50%, -50%);
+       transform: translate(-50%, -50%);
+  }
+
+
+
+
+  </style>
+</head>
+
+<body onload="resize()">
+    <article id="maincontainer">
+    <div id="op"><b>WEATHER FORECAST<br><span style="color: white"> -powered by Openweathermap</span></b></div>
+    <div id="loader1" class ="loader1">
+        <ul>
+            <p><li>This web app is created using openweather map API</li></p>
+        <p><li>An Application Programming Interface(API) is a computing interface which defines interactions between multiple software intermediaries.</li> </p>
+        <p><li>Don't forget to try dark mode </li></p>
+        <p style="text-align: center"> !---HAPPY CODING---!</p> </ul>
+        <button id = "start"  class = "start" onclick="load1()">Get Started!</button>
+
+</div>
+
+    <button  id ="dark" onclick = "darkmode()"><b>Dark Mode</b></button>
+     <div id="cright"><b>&copy;CopyRights: Sundara Lingam</b></div>
+    <div id ="page">
+
+    <input id="city"  class ="city"  placeholder="city">
+    <input class="search" id="search" type="button" value="search" onclick = "load2() ,  fun(city.value)">
+    </div>
+   <article id ="fetch">
+    <div id="loader2"></div>
+    <p id = "text"><b>Fetching...</b></p>
+    </article>
+    <div id ="tit"><b>WEATHER FORECAST</b></div>
+    <article id="forecast" class ="lightmode" >
+
+      <b>
+
+      <p><div id="temp" style="text-align: center"></div></p>
+      <p><div id="tempmin" style="text-align: left"></div></p>
+      <p><div id="tempmax" style="text-align: right"></div></p>
+      <p><div id="desimg" style="text-align: center"></div></p>
+      <p><div id="des" style="text-align: center"></div></p>
+      <p><div id="pres" style="text-align: left"></div> </p>
+      <p><div id="humid"   style="text-align: right"></div></p>
+      <p><div id="wind" style="text-align: center"></div></p></b>
+      </article>
+</article>
+</body>
+
+ <script>
+ var dmode = 0;
+ function load1()
+ {
+   document.getElementById("loader1").style.display = "none";
+   document.getElementById("page").style.display = "block";
+   document.getElementById("op").style.display = "none";
+   document.getElementById("tit").style.display = "block";
+ }
+ function load2()
+ {
+   document.getElementById("forecast").style.display = "none";
+   document.getElementById("fetch").style.display = "block";
+   setTimeout(function() {document.getElementById("fetch").style.display = "none";}, 2000);
+   setTimeout(function() {document.getElementById("forecast").style.display = "block";}, 2100);
+
+ }
+
+ function fun(cityID) {
+   //api url and key
+   var key = "1f69bee5f6470cb83ac3c57b11eecd35";
+   var URL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityID +"&units=metric&appid=" + key;
+
+   // api request
+   var xhr = new XMLHttpRequest();
+   xhr.open('GET', URL, false);
+   xhr.send();
+   var res = JSON.parse(xhr.response);
+
+   //data from api
+   var temp = res.main.temp + "&deg;C";
+   var tempmin = res.main.temp_min + "&deg;C";
+   var tempmax = res.main.temp_max + "&deg;C";
+   var pre = res.main.pressure + "mb";
+   var des = res.weather[0].description;
+   var humid = res.main.humidity+"%";
+   var wind = res.wind.speed+ "km/h";
+   var img = "https://openweathermap.org/img/w/"+res.weather[0].icon+".png";
+   var x = document.createElement("IMG");
+   x.setAttribute("src", img);
+   x.setAttribute("width", 80);
+   document.getElementById("desimg").innerHTML = "";
+   document.getElementById("temp").innerHTML = "Temperature: "+temp;
+   document.getElementById("tempmin").innerHTML = "Min: "+tempmin;
+   document.getElementById("tempmax").innerHTML = "Max:"+tempmax;
+   document.getElementById("pres").innerHTML = "Pressure:"+pre;
+   document.getElementById("des").innerHTML = des;
+   document.getElementById("desimg").appendChild(x);
+   document.getElementById("humid").innerHTML = "Humidity:"+humid;
+   document.getElementById("wind").innerHTML = "Wind speed: "+wind;
+
+ }
+ function darkmode()
+ {
+   document.body.classList.toggle("dark-mode");
+   document.getElementById("forecast").classList.toggle("dark-mode");
+   document.getElementById("search").classList.toggle("dark-mode");
+   document.getElementById("city").classList.toggle("dark-mode");
+   document.getElementById("loader1").classList.toggle("dark-mode");
+   document.getElementById("start").classList.toggle("dark-mode");
+
+   if(dmode == 0)
+   {
+     dmode = 1;
+     document.getElementById("dark").innerHTML = "Light Mode";
+   }
+   else
+   {
+     dmode = 0;
+     document.getElementById("dark").innerHTML = "Dark Mode";
+   }
+
+
+
+ }
+  function resize(){
+       var w = parseInt(window.innerWidth);
+       var h = parseInt(window.innerHeight);
+       if(w>h){
+           document.getElementById("maincontainer").style.height =(h-20)+"px";
+           document.getElementById("maincontainer").style.width =((h-20)*17/31)+"px";
+           }
+       else{
+           document.getElementById("maincontainer").style.height = "94%";
+           document.getElementById("maincontainer").style.width = "94%";
+
+       }
+   }
+ </script>
+
+
+
+</html>
+
+
+
