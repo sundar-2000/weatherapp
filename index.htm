@@ -83,11 +83,11 @@
 
   #tit
   {
-      color: #fff;
-      text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
+      text-shadow: 3px 3px 3px rgba(241, 124, 159, 1);
       font-family: Arial, Helvetica, sans-serif;
       animation-name: dance;
       animation-duration: 2s;
+      color: #fff;
   }
   @keyframes dance
   {
@@ -145,16 +145,24 @@
   {
       background: rgba( 103, 91, 107, .25 );
       box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, .37 );
-              backdrop-filter: blur( 10px );
-      -webkit-backdrop-filter: blur( 10px );
+              backdrop-filter: blur( 8.5px );
+      -webkit-backdrop-filter: blur( 8.5px );
       border-radius: 10px;
       display: none;
       padding: 10px;
+      font-family: monospace;
   }
   #forecast:hover
   {
       background: rgba( 103, 91, 107, .5 );
   }
+  @media screen and (min-width: 601px)
+{
+   #forecast{
+       font-size: 20px;
+   }
+
+}
   </style>
 </head>
 
@@ -172,8 +180,6 @@
     </article>
     <article id="forecast">
       <b>
-      <br>
-
       <p><div id="temp" style="text-align: center"></div></p>
       <div><span   id="tempmin"style="float:left;margin-left: 10px"></span>
       <span id="tempmax" style="float:right;margin-right: 10px">
@@ -186,10 +192,10 @@
      </span></div>
       <br>
       <p><div id="wind" style="text-align: center"></div></p></b>
-      <br>
       </article>
        <div id="cright"  style="text-align: center"><h3>&copy;Devoloped by Sundar</h3></div>
  </div>
+
 
 </body>
 
@@ -238,6 +244,7 @@
    document.getElementById("wind").innerHTML = "Wind : "+wind+ " at " +res.wind.deg+"&deg;";
 
  }
+
 
  </script>
 
