@@ -4,15 +4,18 @@
 
 <head>
 
-  <title>Weather forecast</title>
+  <title>WeatherMan</title>
+  <meta name="title" content="WeatherMan">
+  <link rel="shortcut icon" type="image/jpg" href="weather.png"/>
+  <meta name="description" content="Know your area weather and alert you pals">
   <meta name="viewport" content="width=device-width,initialscale=1,maximum-scale=1,user-scalable=no">
-
+  <meta property="og:image" content="weather.png">
+  <script src="https://kit.fontawesome.com/6b08127ac9.js" crossorigin="anonymous"></script>  
   <style>
   body
   {
-      background-image: url('https://c0.wallpaperflare.com/preview/572/961/266/sky-dark-light-clouds.jpg');
+      background-image: url('bg.PNG');
       background-size: cover;
-      background-attachment: fixed;
   }
 
   @keyframes animatetop
@@ -65,7 +68,6 @@
       background-color: #ff00ff ;
       outline: none;
       border-radius: 20px;
-      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
       color: #99ffff;
       animation-name: dance;
       animation-duration: 2s;
@@ -73,7 +75,6 @@
   .city
   {
       padding: 5px;
-      box-shadow: 0 0 3px #ff0000 , 0 0 5px #0000ff;
       color: #000000;
       outline: none;
       border-radius: 20px;
@@ -83,7 +84,6 @@
 
   #tit
   {
-      text-shadow: 3px 3px 3px rgba(241, 124, 159, 1);
       font-family: Arial, Helvetica, sans-serif;
       animation-name: dance;
       animation-duration: 2s;
@@ -134,28 +134,21 @@
       top: 10%;
   }
 
-  #cright
-  {
-      position: fixed;
-      top: 90%;
-  }
-
-
   #forecast
   {
-      background: rgba( 103, 91, 107, .25 );
-      box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, .37 );
-              backdrop-filter: blur( 8.5px );
-      -webkit-backdrop-filter: blur( 8.5px );
+      background: rgba( 255,255,255,0.04);
+      backdrop-filter: blur( 10px );
+      -webkit-backdrop-filter: blur( 10px );
       border-radius: 10px;
+      color: #fff;
       display: none;
       padding: 10px;
       font-family: monospace;
-      color: #fff;
+      border: 2px solid rgba(255,255,255,0.06);
   }
   #forecast:hover
   {
-      background: rgba( 103, 91, 107, .5 );
+      background: rgba(255, 255, 255, 0.1);
   }
   @media screen and (min-width: 601px)
 {
@@ -173,13 +166,14 @@
      <br>
     <div style="display: flex;flex-direction: row;justify-content: center">
     <input id="city"  class ="city"  placeholder="city">&emsp;
-    <input class="search" id="search" type="button" value="search" onclick = "load2() ,  fun(city.value)"><br>
+    <input class="search" id="search" type="button" value="search" onclick = "load2(),fun(city.value)"><br>
     </div>
-    <br>
-     <article id ="fetch">
+     <div id ="fetch">
     <div id="loader2"></div>
-    </article>
-    <article id="forecast">
+     </div>
+     <br>
+     <br>
+    <div id="forecast">
       <b>
       <p><div id="temp" style="text-align: center"></div></p>
       <div><span   id="tempmin"style="float:left;margin-left: 10px"></span>
@@ -193,8 +187,11 @@
      </span></div>
       <br>
       <p><div id="wind" style="text-align: center"></div></p></b>
-      </article>
-       <div id="cright"  style="text-align: center"><h3>&copy;Devoloped by Sundar</h3></div>
+      <div style="float: right;" onclick="share()">
+        <i class="fa fa-share-alt" style="font-size: 1.25rem;cursor: pointer;" aria-hidden="true"></i>
+      </div>
+      <div id="cright"  style="text-align: center;"><h3>&copy;Devoloped by Sundar</h3></div>
+    </div>
  </div>
 
 
@@ -202,6 +199,12 @@
 
 
  <script>
+  var searchurl = new URLSearchParams(location.search);
+    if (input = searchurl.get("city")) {
+        load2();
+        fun(input);
+        document.getElementById('city').value=input;
+    }    
  function load2()
  {
    document.getElementById("forecast").style.display = "none";
@@ -221,7 +224,7 @@
    xhr.open('GET', URL, false);
    xhr.send();
    var res = JSON.parse(xhr.response);
-    console.log(res);
+    //console.log(res);
    //data from api
    var temp = res.main.temp + "&deg;C";
    var tempmin = res.main.temp_min + "&deg;C";
@@ -243,8 +246,19 @@
    document.getElementById("desimg").appendChild(x);
    document.getElementById("humid").innerHTML = "&emsp;Humidity:"+humid;
    document.getElementById("wind").innerHTML = "Wind : "+wind+ " at " +res.wind.deg+"&deg;";
-
- }
+     
+}
+function share(){
+      if (navigator.share) {
+      navigator.share({
+      title: 'WeatherMan',
+      text: 'Know your area\'s weather',
+      url: 'https://sundar-2000.github.io/weatherapp/?city='+city.value,
+     })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+        }
+     }
 
 
  </script>
