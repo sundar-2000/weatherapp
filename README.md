@@ -1,4 +1,4 @@
-# weatherMan
+# WeatherMan
 # Know your area's weather and share with your pals
 ## [View Site](https://sundar-2000.github.io/weatherapp)
 <p>
