@@ -4,3 +4,8 @@
 <p>
 <img src="preview.PNG" width="250" margin="20"> 
 </p>
+
+## Used :
+<li> Openweathermap API </li>
+<li> Glassmorphism UI </li>
+
